@@ -1,0 +1,31 @@
+#User Specific
+*.userprefs
+*.usertasks
+*.DotSettings.user
+*.csproj.user
+*.pubxml.user
+*~
+
+#Rider
+.idea/
+.directory
+
+bin/
+obj/
+packages/*
+.vs/
+.vscode/
+
+#Project Specific
+WinInstall/*
+!*.nsi
+!*.sh
+*.sln.DotSettings.user
+
+#Environment Settings
+*appsettings.Production.json
+*appsettings.Development.json
+
+#Docker Volumes
+Services/Docker/db-data/*
+*.mwb.bak
