@@ -1,5 +1,3 @@
-﻿namespace Identity.Domain;
+namespace Identity.Domain;
 
-public class Class1
-{
-}
+public static class IdentityDomainAssemblyMarker;

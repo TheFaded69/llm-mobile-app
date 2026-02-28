@@ -1,5 +1,3 @@
-﻿namespace Identity.Contracts;
+namespace Identity.Contracts;
 
-public class Class1
-{
-}
+public static class IdentityContractsAssemblyMarker;

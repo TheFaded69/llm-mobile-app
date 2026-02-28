@@ -1,5 +1,3 @@
-﻿namespace Identity.Infrastructure;
+namespace Identity.Infrastructure;
 
-public class Class1
-{
-}
+public static class IdentityInfrastructureAssemblyMarker;
