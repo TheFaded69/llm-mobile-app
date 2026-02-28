@@ -9,7 +9,7 @@ public class UserDataContext : DataContext
 {
     public UserDataContext(DbContextOptions<UserDataContext> options) : base(options)
     {
-        
+        Database.Migrate();
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)

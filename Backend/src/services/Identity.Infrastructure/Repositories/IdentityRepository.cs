@@ -13,11 +13,11 @@ public class IdentityRepository : IIdentityRepository
         _context = context;
     }
 
-    public Task<IdentityUser?> GetUserByEmailAsync(string email, CancellationToken cancellationToken)
-        => _context.Set<IdentityUser>().FirstOrDefaultAsync(x => x.Email == email, cancellationToken);
+    public async Task<IdentityUser?> GetUserByEmailAsync(string email, CancellationToken cancellationToken)
+        => await _context.Set<IdentityUser>().FirstOrDefaultAsync(x => x.Email == email, cancellationToken);
 
-    public Task<IdentityUser?> GetUserByIdAsync(Guid id, CancellationToken cancellationToken)
-        => _context.Set<IdentityUser>().FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
+    public async Task<IdentityUser?> GetUserByIdAsync(Guid id, CancellationToken cancellationToken)
+        => await _context.Set<IdentityUser>().FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
 
     public async Task<IdentityUser> AddUserAsync(IdentityUser user, CancellationToken cancellationToken)
     {
@@ -39,8 +39,8 @@ public class IdentityRepository : IIdentityRepository
         return refreshToken;
     }
 
-    public Task<RefreshToken?> GetRefreshTokenByHashAsync(string tokenHash, CancellationToken cancellationToken)
-        => _context.Set<RefreshToken>().FirstOrDefaultAsync(x => x.TokenHash == tokenHash, cancellationToken);
+    public async Task<RefreshToken?> GetRefreshTokenByHashAsync(string tokenHash, CancellationToken cancellationToken)
+        => await _context.Set<RefreshToken>().FirstOrDefaultAsync(x => x.TokenHash == tokenHash, cancellationToken);
 
     public async Task RevokeRefreshTokenAsync(Guid tokenId, CancellationToken cancellationToken)
     {
@@ -59,8 +59,8 @@ public class IdentityRepository : IIdentityRepository
         return resetToken;
     }
 
-    public Task<PasswordResetToken?> GetPasswordResetTokenByHashAsync(string tokenHash, CancellationToken cancellationToken)
-        => _context.Set<PasswordResetToken>().FirstOrDefaultAsync(x => x.TokenHash == tokenHash, cancellationToken);
+    public async Task<PasswordResetToken?> GetPasswordResetTokenByHashAsync(string tokenHash, CancellationToken cancellationToken)
+        => await _context.Set<PasswordResetToken>().FirstOrDefaultAsync(x => x.TokenHash == tokenHash, cancellationToken);
 
     public async Task MarkPasswordResetTokenUsedAsync(Guid tokenId, CancellationToken cancellationToken)
     {
@@ -72,8 +72,8 @@ public class IdentityRepository : IIdentityRepository
         await _context.SaveChangesAsync(cancellationToken);
     }
 
-    public Task<ExternalLogin?> GetExternalLoginAsync(string provider, string providerUserId, CancellationToken cancellationToken)
-        => _context.Set<ExternalLogin>().FirstOrDefaultAsync(x => x.Provider == provider && x.ProviderUserId == providerUserId, cancellationToken);
+    public async Task<ExternalLogin?> GetExternalLoginAsync(string provider, string providerUserId, CancellationToken cancellationToken)
+        => await _context.Set<ExternalLogin>().FirstOrDefaultAsync(x => x.Provider == provider && x.ProviderUserId == providerUserId, cancellationToken);
 
     public async Task AddExternalLoginAsync(ExternalLogin externalLogin, CancellationToken cancellationToken)
     {

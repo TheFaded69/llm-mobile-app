@@ -8,6 +8,7 @@ public class IdentityDataContext : DataContext
 {
     public IdentityDataContext(DbContextOptions<IdentityDataContext> options) : base(options)
     {
+        Database.Migrate();
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
