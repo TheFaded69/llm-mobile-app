@@ -5,7 +5,7 @@ using Identity.Application.Services;
 using Identity.Infrastructure.DbContext;
 using Identity.Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.OpenApi.Models;
+using Microsoft.OpenApi;
 
 var builder = WebApplication.CreateBuilder(args);
 
