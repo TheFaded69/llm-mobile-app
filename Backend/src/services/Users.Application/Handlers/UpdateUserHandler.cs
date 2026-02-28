@@ -1,5 +1,4 @@
 ﻿using Users.Contracts.V1.Requests;
-using Users.Domain.Models;
 using Users.Infrastructure.Repositories;
 
 namespace Users.Application.Handlers;

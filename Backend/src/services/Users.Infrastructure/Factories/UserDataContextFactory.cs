@@ -1,6 +1,5 @@
 ﻿using BaseInfrastructure.DbContext;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using Users.Infrastructure.DbContext;
 
 namespace Users.Infrastructure.Factories;
