@@ -16,11 +16,13 @@
           <PrivateAssets>all</PrivateAssets>
           <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
+      <PackageReference Include="RabbitMQ.Client" Version="7.1.2" />
         <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="10.1.4" />
         <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="10.1.4" />
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\Identity.Contracts\Identity.Contracts.csproj" />
       <ProjectReference Include="..\Users.Application\Users.Application.csproj" />
       <ProjectReference Include="..\Users.Infrastructure\Users.Infrastructure.csproj" />
     </ItemGroup>

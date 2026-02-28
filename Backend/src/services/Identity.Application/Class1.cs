@@ -1,5 +1,3 @@
-﻿namespace Identity.Application;
+namespace Identity.Application;
 
-public class Class1
-{
-}
+public static class IdentityApplicationAssemblyMarker;

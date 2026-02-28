@@ -2,6 +2,8 @@ using BaseInfrastructure.DbContext;
 using BaseInfrastructure.Factories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi;
+using Users.Api.Models;
+using Users.Api.Services;
 using Users.Application.Handlers;
 using Users.Domain.Models;
 using Users.Infrastructure.Adapters;
@@ -20,6 +22,8 @@ builder.Services.AddSwaggerGen(c =>
         Version = "v1"
     });
 });
+
+builder.Services.Configure<RabbitMqOptions>(builder.Configuration.GetSection("RabbitMq"));
 
 builder.Services.AddDbContextFactory<UserDataContext>(opt =>
 {
@@ -41,6 +45,8 @@ builder.Services.AddScoped<DeleteUserHandler>();
 builder.Services.AddScoped<UpdateUserHandler>();
 builder.Services.AddScoped<GetUserHandler>();
 
+builder.Services.AddHostedService<UserRegisteredConsumerHostedService>();
+
 builder.Services.AddControllers();
 
 var app = builder.Build();
@@ -54,4 +60,3 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
-
