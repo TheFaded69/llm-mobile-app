@@ -1,5 +1,4 @@
-﻿using BaseDomain.Models;
-using BaseInfrastructure.DbContext;
+﻿using BaseInfrastructure.DbContext;
 using Microsoft.EntityFrameworkCore;
 using Users.Domain.Models;
 

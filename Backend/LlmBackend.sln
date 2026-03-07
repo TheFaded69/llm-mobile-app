@@ -17,6 +17,11 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Users", "Users", "{2BDDB330-05AC-43C3-9D5D-7BE4AFF1C479}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docker", "docker", "{5D93C9CD-5388-4339-B28E-F65AC217429F}"
+	ProjectSection(SolutionItems) = preProject
+		src\deploy\docker\docker-compose.yml = src\deploy\docker\docker-compose.yml
+		src\deploy\docker\Dockerfile.identity = src\deploy\docker\Dockerfile.identity
+		src\deploy\docker\Dockerfile.users = src\deploy\docker\Dockerfile.users
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "k8s", "k8s", "{38E347B0-8ADF-463A-AA92-A885C68025C5}"
 EndProject
@@ -48,6 +53,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Users.Domain", "src\service
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Users.Infrastructure", "src\services\Users.Infrastructure\Users.Infrastructure.csproj", "{7057D9C5-A4BF-4D13-BC2F-7B2BAFC1A997}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "database", "database", "{3FEE59AE-091F-460D-9E83-77D9940C34DA}"
+	ProjectSection(SolutionItems) = preProject
+		src\deploy\docker\postgres-init\01-create-databases.sql = src\deploy\docker\postgres-init\01-create-databases.sql
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -74,6 +84,7 @@ Global
 		{C0671825-C46A-46C7-95CA-482A7EFE1304} = {2BDDB330-05AC-43C3-9D5D-7BE4AFF1C479}
 		{B3D023D7-6A61-4250-9BBC-89CD44D3EC6C} = {2BDDB330-05AC-43C3-9D5D-7BE4AFF1C479}
 		{7057D9C5-A4BF-4D13-BC2F-7B2BAFC1A997} = {2BDDB330-05AC-43C3-9D5D-7BE4AFF1C479}
+		{3FEE59AE-091F-460D-9E83-77D9940C34DA} = {2F570363-AC2E-4413-92B2-768C0BAE5F27}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{709CD4FD-4FB8-4CC3-959C-2139A11735BB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU

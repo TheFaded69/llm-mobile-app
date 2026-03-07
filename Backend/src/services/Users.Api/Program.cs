@@ -8,7 +8,6 @@ using Users.Application.Handlers;
 using Users.Domain.Models;
 using Users.Infrastructure.Adapters;
 using Users.Infrastructure.DbContext;
-using Users.Infrastructure.Factories;
 using Users.Infrastructure.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
