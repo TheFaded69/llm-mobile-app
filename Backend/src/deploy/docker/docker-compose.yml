@@ -72,5 +72,15 @@ services:
     ports:
       - "5002:8080"
 
+  gamemodes-api:
+    build:
+      context: ../../../
+      dockerfile: src/deploy/docker/Dockerfile.gamemodes
+    container_name: llm-gamemodes-api
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+    ports:
+      - "5003:8080"
+
 volumes:
   postgres_data:
