@@ -157,7 +157,7 @@ public class GameModesService
         };
     }
 
-    private static SessionStateResponse ToSessionState(GameModes.Domain.TestSetAggregate set, GameModes.Domain.TestSessionAggregate session)
+    private static SessionStateResponse ToSessionState(GameModes.Domain.Models.TestSetAggregate set, GameModes.Domain.Models.TestSessionAggregate session)
     {
         return new SessionStateResponse
         {

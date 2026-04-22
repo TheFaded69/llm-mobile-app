@@ -1,5 +1,5 @@
 using GameModes.Contracts.V1;
-using GameModes.Domain;
+using GameModes.Domain.Models;
 
 namespace GameModes.Infrastructure.Repositories;
 
