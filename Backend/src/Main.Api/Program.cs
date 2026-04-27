@@ -49,12 +49,16 @@ builder.Services.AddScoped<IIdentityRepository, IdentityRepository>();
 
 #endregion
 
+#region Services (Main logic)
+
 builder.Services.AddScoped<AuthService>();
 
 builder.Services.AddScoped<AddUserHandler>();
 builder.Services.AddScoped<DeleteUserHandler>();
 builder.Services.AddScoped<UpdateUserHandler>();
 builder.Services.AddScoped<GetUserHandler>();
+
+#endregion
 
 builder.Services.AddControllers();
 

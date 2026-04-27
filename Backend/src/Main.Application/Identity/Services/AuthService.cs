@@ -21,11 +21,9 @@ public class AuthService
 
     public AuthService(
         IIdentityRepository repository,
-        IOptions<JwtOptions> jwtOptions,
-        IUserRegisteredPublisher publisher)
+        IOptions<JwtOptions> jwtOptions)
     {
         _repository = repository;
-        _publisher = publisher;
         _jwtOptions = jwtOptions.Value;
     }
 
