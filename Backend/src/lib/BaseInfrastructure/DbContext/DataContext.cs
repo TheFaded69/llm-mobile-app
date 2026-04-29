@@ -32,7 +32,7 @@ public class DataContext : Microsoft.EntityFrameworkCore.DbContext, IDataContext
         try
         {
             await SaveChangesAsync();
-            await _transaction.CommitAsync();
+            if (_transaction != null) await _transaction.CommitAsync();
         }
         finally
         {

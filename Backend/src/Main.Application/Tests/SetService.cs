@@ -20,14 +20,11 @@ public class SetService : ISetService
     
     public async Task<Guid> CreateSetAsync(Guid userId, CancellationToken cancellationToken)
     {
-        var user =  await _userRepository.GetByIdAsync(userId, cancellationToken);
-        
         var set = new Set()
         {
             Id = Guid.NewGuid(),
             UserId = userId,
-            User = user,
-            Title = "Новый набор",
+            Title = string.Empty,
             Description = string.Empty,
             SetStatus = SetStatus.Draft,
             TestDifficult = TestDifficult.None,

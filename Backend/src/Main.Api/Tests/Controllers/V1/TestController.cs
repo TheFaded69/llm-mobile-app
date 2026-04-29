@@ -22,7 +22,7 @@ public class TestController : ControllerBase
     [Authorize]
     [ProducesResponseType(typeof(Set), StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> CreateSetAsync(
+    public async Task<IActionResult> CreateSet(
         CancellationToken cancellationToken)
     {
         var userId = User.GetUserId();
@@ -30,7 +30,7 @@ public class TestController : ControllerBase
         var id = await _setService.CreateSetAsync(userId, cancellationToken);
 
         return CreatedAtAction(
-            nameof(GetSetAsync),
+            nameof(GetSet),
             new { id },
             new { id }
         );
@@ -39,7 +39,7 @@ public class TestController : ControllerBase
     [HttpGet("{id:guid}")]
     [ProducesResponseType(typeof(GetSetResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> GetSetAsync(
+    public async Task<IActionResult> GetSet(
         Guid id,
         CancellationToken cancellationToken)
     {
