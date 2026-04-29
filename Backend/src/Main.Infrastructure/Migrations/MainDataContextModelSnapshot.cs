@@ -71,7 +71,8 @@ namespace Main.Infrastructure.Migrations
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasMaxLength(255)
+                        .HasColumnType("character varying(255)");
 
                     b.Property<string>("PasswordHash")
                         .IsRequired()
@@ -79,7 +80,8 @@ namespace Main.Infrastructure.Migrations
 
                     b.Property<string>("UserName")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasMaxLength(255)
+                        .HasColumnType("character varying(255)");
 
                     b.HasKey("Id");
 
@@ -167,6 +169,274 @@ namespace Main.Infrastructure.Migrations
                     b.ToTable("RefreshTokens", (string)null);
                 });
 
+            modelBuilder.Entity("Main.Domain.Tests.Models.Questions.TestQuestionQuestionOption", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreateTime")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("timestamp with time zone")
+                        .HasDefaultValueSql("NOW()");
+
+                    b.Property<bool>("Deleted")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("Option")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("character varying(255)");
+
+                    b.Property<Guid>("TestQuestionQuestionId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TestQuestionQuestionId");
+
+                    b.ToTable("TestQuestionQuestionOptions", (string)null);
+                });
+
+            modelBuilder.Entity("Main.Domain.Tests.Models.Questions.TestQuestionSelectionAnswer", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Answer")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("character varying(255)");
+
+                    b.Property<DateTime>("CreateTime")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("timestamp with time zone")
+                        .HasDefaultValueSql("NOW()");
+
+                    b.Property<bool>("Deleted")
+                        .HasColumnType("boolean");
+
+                    b.Property<Guid>("TestQuestionSelectionId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TestQuestionSelectionId");
+
+                    b.ToTable("TestQuestionSelectionAnswers", (string)null);
+                });
+
+            modelBuilder.Entity("Main.Domain.Tests.Models.Session", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreateTime")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("timestamp with time zone")
+                        .HasDefaultValueSql("NOW()");
+
+                    b.Property<bool>("Deleted")
+                        .HasColumnType("boolean");
+
+                    b.Property<Guid?>("DeviceId")
+                        .HasColumnType("uuid");
+
+                    b.Property<int>("SessionStatus")
+                        .HasColumnType("integer");
+
+                    b.Property<Guid>("SetId")
+                        .HasColumnType("uuid");
+
+                    b.Property<int>("TestMode")
+                        .HasColumnType("integer");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("SetId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Sessions", (string)null);
+                });
+
+            modelBuilder.Entity("Main.Domain.Tests.Models.SessionItem", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid?>("AnswerId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreateTime")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("timestamp with time zone")
+                        .HasDefaultValueSql("NOW()");
+
+                    b.Property<bool>("Deleted")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool?>("IsCorrect")
+                        .HasColumnType("boolean");
+
+                    b.Property<Guid>("QuestionId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("SessionId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AnswerId")
+                        .IsUnique();
+
+                    b.HasIndex("QuestionId")
+                        .IsUnique();
+
+                    b.HasIndex("SessionId");
+
+                    b.ToTable("SessionItems", (string)null);
+                });
+
+            modelBuilder.Entity("Main.Domain.Tests.Models.Set", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreateTime")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("timestamp with time zone")
+                        .HasDefaultValueSql("NOW()");
+
+                    b.Property<bool>("Deleted")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int>("Duration")
+                        .HasColumnType("integer");
+
+                    b.Property<bool>("IsPublic")
+                        .HasColumnType("boolean");
+
+                    b.Property<int>("SetStatus")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("TestDifficult")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("character varying(255)");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Sets", (string)null);
+                });
+
+            modelBuilder.Entity("Main.Domain.Tests.Models.SetItem", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreateTime")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("timestamp with time zone")
+                        .HasDefaultValueSql("NOW()");
+
+                    b.Property<bool>("Deleted")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<Guid>("SetId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Term")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("SetId");
+
+                    b.ToTable("SetItems", (string)null);
+                });
+
+            modelBuilder.Entity("Main.Domain.Tests.Models.TestAnswer", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreateTime")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("timestamp with time zone")
+                        .HasDefaultValueSql("NOW()");
+
+                    b.Property<bool>("Deleted")
+                        .HasColumnType("boolean");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("TestAnswers", (string)null);
+
+                    b.UseTptMappingStrategy();
+                });
+
+            modelBuilder.Entity("Main.Domain.Tests.Models.TestQuestion", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreateTime")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("timestamp with time zone")
+                        .HasDefaultValueSql("NOW()");
+
+                    b.Property<string>("Definition")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<bool>("Deleted")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("ExplainTerm")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("character varying(255)");
+
+                    b.Property<string>("ExplainText")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("character varying(255)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("TestQuestions", (string)null);
+
+                    b.UseTptMappingStrategy();
+                });
+
             modelBuilder.Entity("Main.Domain.Users.Models.User", b =>
                 {
                     b.Property<Guid>("Id")
@@ -183,14 +453,16 @@ namespace Main.Infrastructure.Migrations
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasMaxLength(255)
+                        .HasColumnType("character varying(255)");
 
                     b.Property<int>("Role")
                         .HasColumnType("integer");
 
                     b.Property<string>("UserName")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasMaxLength(255)
+                        .HasColumnType("character varying(255)");
 
                     b.Property<int>("UserType")
                         .HasColumnType("integer");
@@ -201,6 +473,259 @@ namespace Main.Infrastructure.Migrations
                         .IsUnique();
 
                     b.ToTable("Users", (string)null);
+                });
+
+            modelBuilder.Entity("Main.Domain.Tests.Models.Answers.TestAnswerQuestion", b =>
+                {
+                    b.HasBaseType("Main.Domain.Tests.Models.TestAnswer");
+
+                    b.Property<int>("SelectedIndex")
+                        .HasColumnType("integer");
+
+                    b.ToTable("TestAnswerQuestions", (string)null);
+                });
+
+            modelBuilder.Entity("Main.Domain.Tests.Models.Answers.TestAnswerSelection", b =>
+                {
+                    b.HasBaseType("Main.Domain.Tests.Models.TestAnswer");
+
+                    b.Property<string>("SelectedLabel")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("character varying(255)");
+
+                    b.ToTable("TestAnswerSelections", (string)null);
+                });
+
+            modelBuilder.Entity("Main.Domain.Tests.Models.Answers.TestAnswerTrueFalse", b =>
+                {
+                    b.HasBaseType("Main.Domain.Tests.Models.TestAnswer");
+
+                    b.Property<bool>("UserSaidTrue")
+                        .HasColumnType("boolean");
+
+                    b.ToTable("TestAnswerTrueFalses", (string)null);
+                });
+
+            modelBuilder.Entity("Main.Domain.Tests.Models.Answers.TestAnswerWritten", b =>
+                {
+                    b.HasBaseType("Main.Domain.Tests.Models.TestAnswer");
+
+                    b.Property<string>("UserText")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("character varying(255)");
+
+                    b.ToTable("TestAnswerWrittens", (string)null);
+                });
+
+            modelBuilder.Entity("Main.Domain.Tests.Models.Questions.TestQuestionQuestion", b =>
+                {
+                    b.HasBaseType("Main.Domain.Tests.Models.TestQuestion");
+
+                    b.ToTable("TestQuestionQuestions", (string)null);
+                });
+
+            modelBuilder.Entity("Main.Domain.Tests.Models.Questions.TestQuestionSelection", b =>
+                {
+                    b.HasBaseType("Main.Domain.Tests.Models.TestQuestion");
+
+                    b.ToTable("TestQuestionSelections", (string)null);
+                });
+
+            modelBuilder.Entity("Main.Domain.Tests.Models.Questions.TestQuestionTrueFalse", b =>
+                {
+                    b.HasBaseType("Main.Domain.Tests.Models.TestQuestion");
+
+                    b.Property<string>("Term")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("TermTranslation")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.ToTable("TestQuestionTrueFalses", (string)null);
+                });
+
+            modelBuilder.Entity("Main.Domain.Tests.Models.Questions.TestQuestionQuestionOption", b =>
+                {
+                    b.HasOne("Main.Domain.Tests.Models.Questions.TestQuestionQuestion", "TestQuestionQuestion")
+                        .WithMany("Options")
+                        .HasForeignKey("TestQuestionQuestionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("TestQuestionQuestion");
+                });
+
+            modelBuilder.Entity("Main.Domain.Tests.Models.Questions.TestQuestionSelectionAnswer", b =>
+                {
+                    b.HasOne("Main.Domain.Tests.Models.Questions.TestQuestionSelection", "TestQuestionSelection")
+                        .WithMany("AnswerPool")
+                        .HasForeignKey("TestQuestionSelectionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("TestQuestionSelection");
+                });
+
+            modelBuilder.Entity("Main.Domain.Tests.Models.Session", b =>
+                {
+                    b.HasOne("Main.Domain.Tests.Models.Set", "Set")
+                        .WithMany("Sessions")
+                        .HasForeignKey("SetId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Main.Domain.Users.Models.User", "User")
+                        .WithMany("Sessions")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Set");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Main.Domain.Tests.Models.SessionItem", b =>
+                {
+                    b.HasOne("Main.Domain.Tests.Models.TestAnswer", "Answer")
+                        .WithOne()
+                        .HasForeignKey("Main.Domain.Tests.Models.SessionItem", "AnswerId");
+
+                    b.HasOne("Main.Domain.Tests.Models.TestQuestion", "Question")
+                        .WithOne()
+                        .HasForeignKey("Main.Domain.Tests.Models.SessionItem", "QuestionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Main.Domain.Tests.Models.Session", "Session")
+                        .WithMany("SessionItems")
+                        .HasForeignKey("SessionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Answer");
+
+                    b.Navigation("Question");
+
+                    b.Navigation("Session");
+                });
+
+            modelBuilder.Entity("Main.Domain.Tests.Models.Set", b =>
+                {
+                    b.HasOne("Main.Domain.Users.Models.User", "User")
+                        .WithMany("Sets")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Main.Domain.Tests.Models.SetItem", b =>
+                {
+                    b.HasOne("Main.Domain.Tests.Models.Set", "Set")
+                        .WithMany("SetItems")
+                        .HasForeignKey("SetId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Set");
+                });
+
+            modelBuilder.Entity("Main.Domain.Tests.Models.Answers.TestAnswerQuestion", b =>
+                {
+                    b.HasOne("Main.Domain.Tests.Models.TestAnswer", null)
+                        .WithOne()
+                        .HasForeignKey("Main.Domain.Tests.Models.Answers.TestAnswerQuestion", "Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Main.Domain.Tests.Models.Answers.TestAnswerSelection", b =>
+                {
+                    b.HasOne("Main.Domain.Tests.Models.TestAnswer", null)
+                        .WithOne()
+                        .HasForeignKey("Main.Domain.Tests.Models.Answers.TestAnswerSelection", "Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Main.Domain.Tests.Models.Answers.TestAnswerTrueFalse", b =>
+                {
+                    b.HasOne("Main.Domain.Tests.Models.TestAnswer", null)
+                        .WithOne()
+                        .HasForeignKey("Main.Domain.Tests.Models.Answers.TestAnswerTrueFalse", "Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Main.Domain.Tests.Models.Answers.TestAnswerWritten", b =>
+                {
+                    b.HasOne("Main.Domain.Tests.Models.TestAnswer", null)
+                        .WithOne()
+                        .HasForeignKey("Main.Domain.Tests.Models.Answers.TestAnswerWritten", "Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Main.Domain.Tests.Models.Questions.TestQuestionQuestion", b =>
+                {
+                    b.HasOne("Main.Domain.Tests.Models.TestQuestion", null)
+                        .WithOne()
+                        .HasForeignKey("Main.Domain.Tests.Models.Questions.TestQuestionQuestion", "Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Main.Domain.Tests.Models.Questions.TestQuestionSelection", b =>
+                {
+                    b.HasOne("Main.Domain.Tests.Models.TestQuestion", null)
+                        .WithOne()
+                        .HasForeignKey("Main.Domain.Tests.Models.Questions.TestQuestionSelection", "Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Main.Domain.Tests.Models.Questions.TestQuestionTrueFalse", b =>
+                {
+                    b.HasOne("Main.Domain.Tests.Models.TestQuestion", null)
+                        .WithOne()
+                        .HasForeignKey("Main.Domain.Tests.Models.Questions.TestQuestionTrueFalse", "Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Main.Domain.Tests.Models.Session", b =>
+                {
+                    b.Navigation("SessionItems");
+                });
+
+            modelBuilder.Entity("Main.Domain.Tests.Models.Set", b =>
+                {
+                    b.Navigation("Sessions");
+
+                    b.Navigation("SetItems");
+                });
+
+            modelBuilder.Entity("Main.Domain.Users.Models.User", b =>
+                {
+                    b.Navigation("Sessions");
+
+                    b.Navigation("Sets");
+                });
+
+            modelBuilder.Entity("Main.Domain.Tests.Models.Questions.TestQuestionQuestion", b =>
+                {
+                    b.Navigation("Options");
+                });
+
+            modelBuilder.Entity("Main.Domain.Tests.Models.Questions.TestQuestionSelection", b =>
+                {
+                    b.Navigation("AnswerPool");
                 });
 #pragma warning restore 612, 618
         }

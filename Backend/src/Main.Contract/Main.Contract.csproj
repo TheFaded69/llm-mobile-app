@@ -7,8 +7,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Folder Include="Games\V1\Requests\" />
-      <Folder Include="Games\V1\Responses\" />
+      <Folder Include="Tests\V1\Requests\" />
       <Folder Include="Users\V1\DTO\" />
     </ItemGroup>
 

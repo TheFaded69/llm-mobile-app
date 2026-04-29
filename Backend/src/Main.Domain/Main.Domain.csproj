@@ -7,10 +7,6 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Folder Include="Games\" />
-    </ItemGroup>
-
-    <ItemGroup>
       <ProjectReference Include="..\lib\BaseDomain\BaseDomain.csproj" />
     </ItemGroup>
 

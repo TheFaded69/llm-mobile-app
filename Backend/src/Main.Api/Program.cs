@@ -1,13 +1,20 @@
+using System.Text;
 using BaseInfrastructure.DbContext;
 using BaseInfrastructure.Factories;
+using Main.Api.Middleware;
 using Main.Application.Identity.Models;
 using Main.Application.Identity.Services;
+using Main.Application.Tests;
 using Main.Application.Users.Handlers;
+using Main.Domain.Tests.Models;
 using Main.Domain.Users.Models;
 using Main.Infrastructure.Adapters;
 using Main.Infrastructure.DbContext;
 using Main.Infrastructure.Repositories;
+using Main.Infrastructure.Repositories.Tests;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -23,6 +30,34 @@ builder.Services.AddSwaggerGen(c =>
 });
 
 builder.Services.Configure<JwtOptions>(builder.Configuration.GetSection("Jwt"));
+
+#region Authentication
+
+builder.Services
+    .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        var jwtOptions = builder.Configuration
+            .GetSection("Jwt")
+            .Get<JwtOptions>();
+        
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidIssuer = jwtOptions.Issuer,
+
+            ValidateAudience = true,
+            ValidAudience = jwtOptions.Audience,
+
+            ValidateLifetime = true,
+
+            ValidateIssuerSigningKey = true,
+            IssuerSigningKey = new SymmetricSecurityKey(
+                Encoding.UTF8.GetBytes(jwtOptions.Key))
+        };
+    });
+
+#endregion
 
 #region DataContext
 
@@ -45,6 +80,9 @@ builder.Services.AddScoped<IDbContextFactory<DataContext>>(sp =>
 builder.Services.AddScoped<IRepositoryFactory<User, Guid>, RepositoryFactory<User, Guid>>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 
+builder.Services.AddScoped<IRepositoryFactory<Set, Guid>, RepositoryFactory<Set, Guid>>();
+builder.Services.AddScoped<ISetRepository, SetRepository>();
+
 builder.Services.AddScoped<IIdentityRepository, IdentityRepository>();
 
 #endregion
@@ -58,14 +96,26 @@ builder.Services.AddScoped<DeleteUserHandler>();
 builder.Services.AddScoped<UpdateUserHandler>();
 builder.Services.AddScoped<GetUserHandler>();
 
+builder.Services.AddScoped<ISetService, SetService>();
+
 #endregion
 
 builder.Services.AddControllers();
 
 var app = builder.Build();
 
+#region Middleware
+
+app.UseMiddleware<ExceptionMiddleware>();
+
+#endregion
+
+#region Swagger
+
 app.UseSwagger();
 app.UseSwaggerUI();
+
+#endregion
 
 app.UseAuthentication();
 app.UseAuthorization();

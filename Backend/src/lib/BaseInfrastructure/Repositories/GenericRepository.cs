@@ -4,11 +4,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BaseInfrastructure.Repositories;
 
-public class Repository<TModelType, TKeyType> : IRepository<TModelType, TKeyType> where TModelType : Entity<TKeyType>
+public class GenericRepository<TModelType, TKeyType> : IGenericRepository<TModelType, TKeyType> where TModelType : Entity<TKeyType>
 {
     private readonly DataContext _dbContext;
     
-    public Repository(DataContext dataDbContext)
+    public GenericRepository(DataContext dataDbContext)
     {
         _dbContext = dataDbContext;
     }
@@ -21,12 +21,16 @@ public class Repository<TModelType, TKeyType> : IRepository<TModelType, TKeyType
     /// <summary>
     /// Запрос для извлечения данных без отслеживания
     /// </summary>
-    public IQueryable<TModelType> Query => _dbContext.Set<TModelType>().AsNoTracking();
-
+    public IQueryable<TModelType> Query => _dbContext.Set<TModelType>()
+        .AsNoTracking()
+        .Where(x => x.Deleted == false);
+    
     /// <summary>
     /// Запрос для извлечения данных с отслеживанием
     /// </summary>
-    public IQueryable<TModelType> TrackingQuery => _dbContext.Set<TModelType>().AsTracking();
+    public IQueryable<TModelType> TrackingQuery => _dbContext.Set<TModelType>()
+        .AsTracking()
+        .Where(x => x.Deleted == false);
 
     public DbSet<TModelType> Set => _dbContext.Set<TModelType>();
 
