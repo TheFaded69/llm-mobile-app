@@ -37,6 +37,7 @@ public class TestController : ControllerBase
     }
 
     [HttpGet("{id:guid}")]
+    [Authorize]
     [ProducesResponseType(typeof(GetSetResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetSet(
@@ -48,6 +49,24 @@ public class TestController : ControllerBase
         if (response == null)
             return NotFound();
             
+        return Ok(response);
+    }
+
+    [HttpGet]
+    [Authorize]
+    [ProducesResponseType(typeof(GetSetsResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> GetSets(
+        CancellationToken cancellationToken
+    )
+    {
+        var userId = User.GetUserId();
+
+        var response = await _setService.GetSetsAsync(userId, cancellationToken);
+        
+        if (response == null)
+            return NotFound();
+        
         return Ok(response);
     }
 }

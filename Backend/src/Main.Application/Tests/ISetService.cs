@@ -10,4 +10,6 @@ public interface ISetService
     Task AddSetAsync(CancellationToken cancellationToken);
     
     Task<GetSetResponse> GetSetByIdAsync(Guid id, CancellationToken cancellationToken);
+    
+    Task<GetSetsResponse?> GetSetsAsync(Guid userId, CancellationToken cancellationToken);
 }

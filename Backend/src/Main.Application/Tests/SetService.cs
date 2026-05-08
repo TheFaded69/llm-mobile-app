@@ -10,12 +10,16 @@ public class SetService : ISetService
 {
     private readonly ISetRepository _setRepository;
     private readonly IUserRepository _userRepository;
+    private readonly ISessionRepository _sessionRepository;
 
-    public SetService(ISetRepository? setRepository,
-        IUserRepository userRepository)
+    public SetService(
+        ISetRepository setRepository,
+        IUserRepository userRepository,
+        ISessionRepository sessionRepository)
     {
         _setRepository = setRepository;
         _userRepository = userRepository;
+        _sessionRepository = sessionRepository;
     }
     
     public async Task<Guid> CreateSetAsync(Guid userId, CancellationToken cancellationToken)
@@ -50,5 +54,18 @@ public class SetService : ISetService
         {
             Id = set.Id,
         };
+    }
+
+    public async Task<GetSetsResponse?> GetSetsAsync(Guid userId, CancellationToken cancellationToken)
+    {
+        var sets = await _setRepository.GetSetsAsync(null, null, null, cancellationToken);
+        var sessions = await _sessionRepository.GetSessionsByUserIdAsync(userId, cancellationToken);
+
+        var response = new GetSetsResponse()
+        {
+            
+        };
+        
+        return response;
     }
 }

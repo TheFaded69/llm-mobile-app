@@ -2,7 +2,7 @@
 
 namespace Main.Contract.Tests.V1.Responses;
 
-public class GetSetResponse
+public class GetSetsResponse
 {
-    public SetDTO Set { get; set; }
+    public List<SetDTO> Sets { get; set; }
 }
