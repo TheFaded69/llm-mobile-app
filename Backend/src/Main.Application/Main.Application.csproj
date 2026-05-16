@@ -7,10 +7,6 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Folder Include="Games\" />
-    </ItemGroup>
-
-    <ItemGroup>
       <ProjectReference Include="..\Main.Contract\Main.Contract.csproj" />
       <ProjectReference Include="..\Main.Infrastructure\Main.Infrastructure.csproj" />
     </ItemGroup>

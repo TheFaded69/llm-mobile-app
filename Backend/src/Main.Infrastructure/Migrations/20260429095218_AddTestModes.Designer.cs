@@ -3,6 +3,7 @@ using System;
 using Main.Infrastructure.DbContext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Main.Infrastructure.Migrations
 {
     [DbContext(typeof(MainDataContext))]
-    partial class MainDataContextModelSnapshot : ModelSnapshot
+    [Migration("20260429095218_AddTestModes")]
+    partial class AddTestModes
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -244,9 +247,6 @@ namespace Main.Infrastructure.Migrations
                     b.Property<Guid?>("DeviceId")
                         .HasColumnType("uuid");
 
-                    b.Property<int>("SessionStatus")
-                        .HasColumnType("integer");
-
                     b.Property<Guid>("SetId")
                         .HasColumnType("uuid");
 
@@ -327,9 +327,6 @@ namespace Main.Infrastructure.Migrations
 
                     b.Property<bool>("IsPublic")
                         .HasColumnType("boolean");
-
-                    b.Property<int>("SetStatus")
-                        .HasColumnType("integer");
 
                     b.Property<int>("TestDifficult")
                         .HasColumnType("integer");

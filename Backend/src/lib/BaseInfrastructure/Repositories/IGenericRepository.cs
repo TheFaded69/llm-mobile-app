@@ -3,7 +3,7 @@ using BaseInfrastructure.DbContext;
 
 namespace BaseInfrastructure.Repositories;
 
-public interface IRepository<TModelType, TKeyType> : IDisposable where TModelType : Entity<TKeyType>
+public interface IGenericRepository<TModelType, TKeyType> : IDisposable where TModelType : Entity<TKeyType>
 {
     /// <summary>
     /// Контекст БД
