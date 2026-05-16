@@ -1,0 +1,7 @@
+﻿services:
+  itisenglish.api:
+    image: itisenglish.api
+    build:
+      context: .
+      dockerfile: src/ItIsEnglish.Api/Dockerfile
+

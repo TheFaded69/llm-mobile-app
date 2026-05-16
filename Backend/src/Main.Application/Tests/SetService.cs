@@ -1,4 +1,5 @@
-﻿using Main.Contract.Tests.V1.Responses;
+﻿using Main.Contract.Tests.V1.DTO;
+using Main.Contract.Tests.V1.Responses;
 using Main.Domain.Tests.Enums;
 using Main.Domain.Tests.Models;
 using Main.Infrastructure.Repositories;
@@ -49,10 +50,31 @@ public class SetService : ISetService
         var set = await _setRepository.GetSetByIdAsync(id, cancellationToken);
         
         if (set == null) return null;
-        
-        return new GetSetResponse()
+
+        var setDto = new SetDTO
         {
             Id = set.Id,
+            Title = set.Title,
+            Description = set.Description,
+            TestDifficult = set.TestDifficult,
+            Duration = set.Duration,
+            SetItems = set.SetItems
+                .Select(setItem => new SetItemDTO()
+                {
+                    
+                })
+                .ToList(),
+            Sessions = set.Sessions
+                .Select(session => new SessionDTO()
+                {
+                    
+                })
+                .ToList()
+        };
+
+        return new GetSetResponse()
+        {
+            Set = setDto
         };
     }
 
