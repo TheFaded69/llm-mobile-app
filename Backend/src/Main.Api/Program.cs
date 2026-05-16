@@ -106,6 +106,12 @@ builder.Services.AddControllers();
 
 var app = builder.Build();
 
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<MainDataContext>();
+    db.Database.Migrate();
+}
+
 #region Middleware
 
 app.UseMiddleware<ExceptionMiddleware>();
