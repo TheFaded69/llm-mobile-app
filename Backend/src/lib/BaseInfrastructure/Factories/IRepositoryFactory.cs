@@ -5,7 +5,7 @@ namespace BaseInfrastructure.Factories;
 
 public interface IRepositoryFactory<TModelType, TKeyType> where TModelType : Entity<TKeyType>
 {
-    Task<Repository<TModelType, TKeyType>> CreateRepositoryAsync();
+    Task<GenericRepository<TModelType, TKeyType>> CreateRepositoryAsync();
     
-    Repository<TModelType, TKeyType> CreateRepository();
+    GenericRepository<TModelType, TKeyType> CreateRepository();
 }
