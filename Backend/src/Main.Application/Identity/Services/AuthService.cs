@@ -19,16 +19,19 @@ public class AuthService
     private readonly IIdentityRepository _identityUserRepository;
     private readonly IUserRepository _userRepository;
     private readonly JwtOptions _jwtOptions;
+    private readonly IExternalIdentityValidator _externalIdentityValidator;
     private readonly PasswordHasher<IdentityUser> _passwordHasher = new();
 
     public AuthService(
         IIdentityRepository identityUserRepository,
         IUserRepository userRepository,
-        IOptions<JwtOptions> jwtOptions)
+        IOptions<JwtOptions> jwtOptions,
+        IExternalIdentityValidator externalIdentityValidator)
     {
         _identityUserRepository = identityUserRepository;
         _userRepository = userRepository;
         _jwtOptions = jwtOptions.Value;
+        _externalIdentityValidator = externalIdentityValidator;
     }
 
     public async Task<AuthTokensResponse> RegisterAsync(string email, string password, string username, CancellationToken cancellationToken)
@@ -135,9 +138,16 @@ public class AuthService
         await _identityUserRepository.MarkPasswordResetTokenUsedAsync(token.Id, cancellationToken);
     }
 
-    public async Task<AuthTokensResponse> ExternalLoginAsync(string provider, string code, string? username, CancellationToken cancellationToken)
+    public async Task<AuthTokensResponse> ExternalLoginAsync(string provider, string token, string? username, CancellationToken cancellationToken)
     {
-        var providerUserId = code;
+        var validation = provider.ToLowerInvariant() switch
+        {
+            "google" => await _externalIdentityValidator.ValidateGoogleAsync(token, cancellationToken),
+            "apple" => await _externalIdentityValidator.ValidateAppleAsync(token, cancellationToken),
+            _ => throw new InvalidOperationException("Неподдерживаемый внешний провайдер.")
+        };
+
+        var providerUserId = validation.ProviderUserId;
         var external = await _identityUserRepository.GetExternalLoginAsync(provider, providerUserId, cancellationToken);
 
         IdentityUser identityUser;
@@ -148,17 +158,28 @@ public class AuthService
         }
         else
         {
-            var email = $"{providerUserId}@{provider}.external".ToLowerInvariant();
+            var email = validation.Email ?? $"{providerUserId}@{provider}.external".ToLowerInvariant();
             identityUser = await _identityUserRepository.GetUserByEmailAsync(email, cancellationToken) ?? new IdentityUser
             {
                 Email = email,
-                UserName = username ?? $"{provider}_{providerUserId[..Math.Min(8, providerUserId.Length)]}"
+                UserName = username ?? validation.DisplayName ?? $"{provider}_{providerUserId[..Math.Min(8, providerUserId.Length)]}"
             };
 
             if (identityUser.Id == Guid.Empty)
             {
                 identityUser.PasswordHash = _passwordHasher.HashPassword(identityUser, Convert.ToBase64String(RandomNumberGenerator.GetBytes(24)));
                 await _identityUserRepository.AddUserAsync(identityUser, cancellationToken);
+
+                var user = new User
+                {
+                    Id = identityUser.Id,
+                    Role = UserRole.User,
+                    UserType = UserType.Student,
+                    Email = identityUser.Email,
+                    UserName = identityUser.UserName
+                };
+
+                await _userRepository.AddUserAsync(user, cancellationToken);
             }
 
             await _identityUserRepository.AddExternalLoginAsync(new ExternalLogin

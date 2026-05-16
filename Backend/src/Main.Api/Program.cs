@@ -30,6 +30,7 @@ builder.Services.AddSwaggerGen(c =>
 });
 
 builder.Services.Configure<JwtOptions>(builder.Configuration.GetSection("Jwt"));
+builder.Services.Configure<ExternalAuthOptions>(builder.Configuration.GetSection("ExternalAuth"));
 
 #region Authentication
 
@@ -89,6 +90,7 @@ builder.Services.AddScoped<IIdentityRepository, IdentityRepository>();
 
 #region Services (Main logic)
 
+builder.Services.AddScoped<IExternalIdentityValidator, OidcExternalIdentityValidator>();
 builder.Services.AddScoped<AuthService>();
 
 builder.Services.AddScoped<AddUserHandler>();
