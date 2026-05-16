@@ -19,8 +19,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docker", "docker", "{5D93C9CD-5388-4339-B28E-F65AC217429F}"
 	ProjectSection(SolutionItems) = preProject
 		src\deploy\docker\docker-compose.yml = src\deploy\docker\docker-compose.yml
-		src\deploy\docker\Dockerfile.identity = src\deploy\docker\Dockerfile.identity
-		src\deploy\docker\Dockerfile.users = src\deploy\docker\Dockerfile.users
+		src\deploy\docker\Dockerfile.main = src\deploy\docker\Dockerfile.main
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "k8s", "k8s", "{38E347B0-8ADF-463A-AA92-A885C68025C5}"
