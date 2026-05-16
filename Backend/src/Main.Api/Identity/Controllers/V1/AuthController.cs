@@ -81,14 +81,14 @@ public class AuthController : ControllerBase
     [HttpPost("external/google")]
     public async Task<IActionResult> Google([FromBody] ExternalLoginRequest request, CancellationToken cancellationToken)
     {
-        var tokens = await _authService.ExternalLoginAsync("google", request.Code, request.Username, cancellationToken);
+        var tokens = await _authService.ExternalLoginAsync("google", request.IdToken ?? string.Empty, request.Username, cancellationToken);
         return Ok(tokens);
     }
 
     [HttpPost("external/apple")]
     public async Task<IActionResult> Apple([FromBody] ExternalLoginRequest request, CancellationToken cancellationToken)
     {
-        var tokens = await _authService.ExternalLoginAsync("apple", request.Code, request.Username, cancellationToken);
+        var tokens = await _authService.ExternalLoginAsync("apple", request.IdentityToken ?? string.Empty, request.Username, cancellationToken);
         return Ok(tokens);
     }
 }
