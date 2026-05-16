@@ -84,6 +84,9 @@ builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IRepositoryFactory<Set, Guid>, RepositoryFactory<Set, Guid>>();
 builder.Services.AddScoped<ISetRepository, SetRepository>();
 
+builder.Services.AddScoped<IRepositoryFactory<Session, Guid>, RepositoryFactory<Session, Guid>>();
+builder.Services.AddScoped<ISessionRepository, SessionRepository>();
+
 builder.Services.AddScoped<IIdentityRepository, IdentityRepository>();
 
 #endregion
