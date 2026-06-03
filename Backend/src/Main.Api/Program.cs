@@ -4,6 +4,7 @@ using BaseInfrastructure.Factories;
 using Main.Api.Middleware;
 using Main.Application.Identity.Models;
 using Main.Application.Identity.Services;
+using Main.Application.Llm;
 using Main.Application.Tests;
 using Main.Application.Users.Handlers;
 using Main.Domain.Tests.Models;
@@ -31,6 +32,7 @@ builder.Services.AddSwaggerGen(c =>
 
 builder.Services.Configure<JwtOptions>(builder.Configuration.GetSection("Jwt"));
 builder.Services.Configure<ExternalAuthOptions>(builder.Configuration.GetSection("ExternalAuth"));
+builder.Services.Configure<OpenAiOptions>(builder.Configuration.GetSection(OpenAiOptions.SectionName));
 
 #region Authentication
 
@@ -102,6 +104,12 @@ builder.Services.AddScoped<UpdateUserHandler>();
 builder.Services.AddScoped<GetUserHandler>();
 
 builder.Services.AddScoped<ISetService, SetService>();
+
+builder.Services.AddHttpClient<IOpenAiClient, OpenAiHttpClient>((sp, client) =>
+{
+    var options = sp.GetRequiredService<Microsoft.Extensions.Options.IOptions<OpenAiOptions>>().Value;
+    client.BaseAddress = new Uri(options.BaseUrl);
+});
 
 #endregion
 
