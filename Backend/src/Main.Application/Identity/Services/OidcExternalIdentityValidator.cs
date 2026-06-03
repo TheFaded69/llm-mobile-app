@@ -44,19 +44,29 @@ public class OidcExternalIdentityValidator : IExternalIdentityValidator
 
         var configuration = await configurationManager.GetConfigurationAsync(cancellationToken);
 
+        if (audiences.Count == 0)
+            throw new InvalidOperationException("Не настроены допустимые audience.");
+
         var parameters = new TokenValidationParameters
         {
             ValidateIssuerSigningKey = true,
             IssuerSigningKeys = configuration.SigningKeys,
+
             ValidateIssuer = true,
-            ValidIssuers = [issuer],
-            ValidateAudience = audiences.Count > 0,
+            ValidIssuer = issuer,
+
+            ValidateAudience = true,
             ValidAudiences = audiences,
+
             ValidateLifetime = true,
             ClockSkew = TimeSpan.FromMinutes(2)
         };
 
-        var handler = new JwtSecurityTokenHandler();
+        var handler = new JwtSecurityTokenHandler
+        {
+            MapInboundClaims = false
+        };
+
         var principal = handler.ValidateToken(token, parameters, out var validatedToken);
 
         if (validatedToken is not JwtSecurityToken)
