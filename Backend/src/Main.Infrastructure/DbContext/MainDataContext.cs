@@ -138,8 +138,8 @@ public class MainDataContext : DataContext
         modelBuilder.Entity<Set>(b =>
         {
             b.ToTable("Sets");
-            b.HasOne(s => s.User)
-                .WithMany(u => u.CreatedSets)
+            b.HasOne<User>()
+                .WithMany()
                 .HasForeignKey(s => s.UserId);
             b.Property(x => x.Title)
                 .IsRequired()
@@ -177,11 +177,11 @@ public class MainDataContext : DataContext
         modelBuilder.Entity<Session>(b =>
         {
             b.ToTable("Sessions");
-            b.HasOne(s => s.Set)
-                .WithMany(u => u.Sessions)
+            b.HasOne<Set>()
+                .WithMany()
                 .HasForeignKey(s => s.SetId);
-            b.HasOne(s => s.User)
-                .WithMany(u => u.Sessions)
+            b.HasOne<User>()
+                .WithMany()
                 .HasForeignKey(s => s.UserId);
             b.Property(x => x.DeviceId)
                 .IsRequired(false);;

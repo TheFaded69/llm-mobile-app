@@ -16,10 +16,4 @@ public class User : GuidEntity
     public string Email { get; set; }
     
     public string UserName { get; set; }
-    
-    public List<Set>  CreatedSets { get; set; }
-    
-    public List<Set> FavoriteSets { get; set; }
-    
-    public List<Session> Sessions { get; set; }
 }

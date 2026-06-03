@@ -64,12 +64,6 @@ public class SetService : ISetService
                     
                 })
                 .ToList(),
-            Sessions = set.Sessions
-                .Select(session => new SessionDTO()
-                {
-                    
-                })
-                .ToList()
         };
 
         return new GetSetResponse()
