@@ -40,6 +40,7 @@ public class MainDataContext : DataContext
         modelBuilder
             .Entity<User>()
             .Property(e => e.UserName)
+            .IsRequired(false)
             .HasMaxLength(255);
         modelBuilder
             .Entity<User>()
@@ -75,7 +76,7 @@ public class MainDataContext : DataContext
         modelBuilder
             .Entity<IdentityUser>()
             .Property(x => x.UserName)
-            .IsRequired()
+            .IsRequired(false)
             .HasMaxLength(255);
         modelBuilder
             .Entity<IdentityUser>()

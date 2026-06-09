@@ -9,6 +9,9 @@
     <ItemGroup>
       <Folder Include="Tests\V1\DTO\Answers\" />
       <Folder Include="Tests\V1\DTO\Questions\" />
+      <Folder Include="Tutors\V1\DTO\" />
+      <Folder Include="Tutors\V1\Requests\" />
+      <Folder Include="Tutors\V1\Responses\" />
       <Folder Include="Users\V1\DTO\" />
     </ItemGroup>
 

@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Main.Api.Tests.Controllers.V1;
 
 [ApiController]
-[Route("tests")]
+[Route("api/v1/tests")]
 public class TestController : ControllerBase
 {
     private readonly ISetService _setService;

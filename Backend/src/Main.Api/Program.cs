@@ -2,17 +2,23 @@ using System.Text;
 using BaseInfrastructure.DbContext;
 using BaseInfrastructure.Factories;
 using Main.Api.Middleware;
+using Main.Application.Dialogs;
 using Main.Application.Identity.Models;
 using Main.Application.Identity.Services;
 using Main.Application.Llm;
 using Main.Application.Tests;
+using Main.Application.Tutors;
 using Main.Application.Users.Handlers;
+using Main.Domain.Dialogs.Models;
 using Main.Domain.Tests.Models;
+using Main.Domain.Tutors.Models;
 using Main.Domain.Users.Models;
 using Main.Infrastructure.Adapters;
 using Main.Infrastructure.DbContext;
 using Main.Infrastructure.Repositories;
+using Main.Infrastructure.Repositories.Dialogs;
 using Main.Infrastructure.Repositories.Tests;
+using Main.Infrastructure.Repositories.Tutors;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -91,6 +97,12 @@ builder.Services.AddScoped<ISessionRepository, SessionRepository>();
 
 builder.Services.AddScoped<IIdentityRepository, IdentityRepository>();
 
+builder.Services.AddScoped<IRepositoryFactory<Tutor, Guid>, RepositoryFactory<Tutor, Guid>>();
+builder.Services.AddScoped<ITutorRepository, TutorRepository>();
+
+builder.Services.AddScoped<IRepositoryFactory<Dialog, Guid>, RepositoryFactory<Dialog, Guid>>();
+builder.Services.AddScoped<IDialogRepository, DialogRepository>();
+
 #endregion
 
 #region Services (Main logic)
@@ -104,6 +116,8 @@ builder.Services.AddScoped<UpdateUserHandler>();
 builder.Services.AddScoped<GetUserHandler>();
 
 builder.Services.AddScoped<ISetService, SetService>();
+builder.Services.AddScoped<IDialogService, DialogService>();
+builder.Services.AddScoped<ITutorService, TutorService>();
 
 builder.Services.AddHttpClient<IOpenAiClient, OpenAiHttpClient>((sp, client) =>
 {

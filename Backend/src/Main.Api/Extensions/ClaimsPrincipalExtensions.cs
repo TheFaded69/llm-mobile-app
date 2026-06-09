@@ -10,9 +10,8 @@ public static class ClaimsPrincipalExtensions
         var value = user.FindFirstValue(ClaimTypes.NameIdentifier)
                     ?? user.FindFirstValue(JwtRegisteredClaimNames.Sub);
 
-        if(!Guid.TryParse(value, out var userId))
-            throw new UnauthorizedAccessException("UserId не найден в токене.");
-
-        return userId;
+        return !Guid.TryParse(value, out var userId) 
+            ? throw new UnauthorizedAccessException("UserId не найден в токене.") 
+            : userId;
     }
 }
