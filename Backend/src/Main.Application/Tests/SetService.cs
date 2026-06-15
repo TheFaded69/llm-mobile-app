@@ -30,14 +30,16 @@ public class SetService : ISetService
     
     public async Task<Guid> CreateSetAsync(Guid userId, CancellationToken cancellationToken)
     {
-        var set = new Set()
+        var set = new Set
         {
             Id = Guid.NewGuid(),
             UserId = userId,
             Title = string.Empty,
             Description = string.Empty,
+            IsPublic = false,
             SetStatus = SetStatus.Draft,
             TestDifficult = TestDifficult.None,
+            Duration = 0,
         };
         
         await _setRepository.AddSetAsync(set, cancellationToken);
@@ -82,6 +84,8 @@ public class SetService : ISetService
         var sets = await _setRepository.GetSetsAsync(null, null, cancellationToken);
         var sessions = await _sessionRepository.GetSessionsByUserIdAsync(userId, cancellationToken);
 
+        if (sets.Count() == 0) return null;
+        
         var response = new GetSetsResponse
         {
             Sets = sets.Select(set => new SetDTO
@@ -133,21 +137,128 @@ public class SetService : ISetService
 
     public async Task UpdateSetAsync(UpdateSetRequest updateSetRequest, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        var set = await _setRepository.GetSetByIdAsync(updateSetRequest.Set.Id, cancellationToken);
+        
+        if (set == null) return;        
+        
+        set.Title = updateSetRequest.Set.Title;
+        set.Description = updateSetRequest.Set.Description;
+        set.TestDifficult = updateSetRequest.Set.TestDifficult;
+        set.Duration = updateSetRequest.Set.Duration;
+        set.IsPublic = updateSetRequest.Set.IsPublic;
+        set.SetStatus =  updateSetRequest.Set.SetStatus;
+        
+        SyncSetItems(set, updateSetRequest.Set.SetItems);
+        
+        await _setRepository.UpdateSetAsync(set, cancellationToken);
+    }
+
+    private void SyncSetItems(Set set, List<SetItemDTO> incoming)
+    {
+        incoming ??= [];
+
+        // 1. удалить отсутствующие
+        var incomingIds = incoming
+            .Where(x => x.SetId != Guid.Empty)
+            .Select(x => x.SetId)
+            .ToHashSet();
+
+        var toRemove = set.SetItems
+            .Where(x => x.Id != Guid.Empty && !incomingIds.Contains(x.Id))
+            .ToList();
+
+        foreach (var item in toRemove)
+        {
+            set.SetItems.Remove(item);
+        }
+
+        // 2. add/update
+        foreach (var dto in incoming)
+        {
+            var existing = set.SetItems.FirstOrDefault(x => x.Id == dto.SetId);
+
+            if (existing is null)
+            {
+                set.SetItems.Add(new SetItem
+                {
+                    SetId = set.Id,
+                    Term = dto.Term,
+                    Description = dto.Description,
+                });
+            }
+            else
+            {
+                existing.Term = dto.Term;
+                existing.Description = dto.Description;
+            }
+        }
     }
 
     public async Task DeleteSetAsync(Guid id, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        await _setRepository.DeleteSetAsync(id, cancellationToken);
     }
 
     public async Task<GetSetsResponse?> GetMySetsAsync(Guid userId, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        var sets = await _setRepository.GetSetsByUserIdAsync(userId, cancellationToken);
+        
+        if (sets.Count() == 0) return null;
+        
+        var response = new GetSetsResponse
+        {
+            Sets = sets.Select(set => new SetDTO
+                {
+                    Id = set.Id,
+                    Title = set.Title,
+                    Description = set.Description,
+                    TestDifficult = set.TestDifficult,
+                    Duration = set.Duration,
+                    SetItems = set.SetItems
+                        .Select(setItem => new SetItemDTO
+                        {
+                            Id = setItem.Id,
+                            SetId = set.Id,
+                            Term = setItem.Term,
+                            Description = setItem.Description,
+                        })
+                        .ToList(),
+                })
+                .ToList(),
+        };
+
+        return response;
     }
 
     public async Task<GetSetsResponse?> GetFavoriteSetsAsync(Guid userId, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        var favoriteSetIds = await _favoriteSetRepository.GetFavoriteSetsId(userId, cancellationToken);
+        var sets = await _setRepository.GetSetsByIdsAsync(favoriteSetIds, cancellationToken);
+
+        if (sets.Count() == 0) return null;
+        
+        var response = new GetSetsResponse
+        {
+            Sets = sets.Select(set => new SetDTO
+                {
+                    Id = set.Id,
+                    Title = set.Title,
+                    Description = set.Description,
+                    TestDifficult = set.TestDifficult,
+                    Duration = set.Duration,
+                    SetItems = set.SetItems
+                        .Select(setItem => new SetItemDTO
+                        {
+                            Id = setItem.Id,
+                            SetId = set.Id,
+                            Term = setItem.Term,
+                            Description = setItem.Description,
+                        })
+                        .ToList(),
+                })
+                .ToList(),
+        };
+
+        return response;
     }
 }

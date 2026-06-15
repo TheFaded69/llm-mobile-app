@@ -38,17 +38,15 @@ public class TutorRepository : ITutorRepository
             .Where(t => t.UserId == userId)
             .ToListAsync(cancellationToken: cancellationToken);
     }
-
-    public async Task<Tutor> GetTutor(Guid id, CancellationToken cancellationToken)
+    
+    public async Task<Tutor?> GetTutorWithDetails(Guid id, CancellationToken cancellationToken)
     {
         using var repository = await _repositoryFactory.CreateRepositoryAsync();
         
-        return await repository.GetAsync(id, cancellationToken);
-    }
-
-    public async Task<Tutor> GetTutorWithDetails(Guid id, CancellationToken cancellationToken)
-    {
-        throw new NotImplementedException();
+        return await repository.Query
+            .Include(t => t.TargetWords)
+            .Include(t => t.Stories)
+            .FirstOrDefaultAsync(t => t.Id == id, cancellationToken);
     }
 
     public async Task UpdateTutor(Tutor tutor, CancellationToken cancellationToken)

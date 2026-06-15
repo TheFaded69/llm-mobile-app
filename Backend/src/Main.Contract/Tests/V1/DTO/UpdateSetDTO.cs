@@ -2,13 +2,13 @@
 
 namespace Main.Contract.Tests.V1.DTO;
 
-public class SetDTO
+public class UpdateSetDTO
 {
     public Guid Id { get; set; }
     
     public string Title { get; set; }
     
-    public string Description { get; set; } 
+    public string Description { get; set; }
     
     public TestDifficult TestDifficult { get; set; }
     
@@ -19,6 +19,4 @@ public class SetDTO
     public bool IsPublic { get; set; }
     
     public List<SetItemDTO> SetItems { get; set; }
-    
-    public List<SessionDTO> Sessions { get; set; }
 }

@@ -88,12 +88,13 @@ public class DialogController : ControllerBase
         }
     }
     
-    [HttpPut("{dialogId:guid}")]
+    /*[HttpPut("{dialogId:guid}")]
     [Authorize]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status501NotImplemented)]
     public async Task<IActionResult> UpdateDialogAsync(
         [FromBody] UpdateDialogRequest request, 
         Guid dialogId,
@@ -101,6 +102,8 @@ public class DialogController : ControllerBase
     {
         try
         {
+            return StatusCode(StatusCodes.Status501NotImplemented);
+            
             if (request.DialogId != Guid.Empty && request.DialogId != dialogId)
                 return BadRequest("Не совпадает [ID] в запросе и теле");
             
@@ -112,7 +115,7 @@ public class DialogController : ControllerBase
         {
             return Problem(e.Message);
         }
-    }
+    }*/
     
     [HttpDelete("{dialogId:guid}")]
     [Authorize]

@@ -64,6 +64,8 @@ public class TutorService : ITutorService
     {
         var tutor = await _tutorRepository.GetTutorWithDetails(id, cancellationToken);
 
+        if (tutor == null) return null;
+        
         return new GetTutorResponse()
         {
             Tutor = new TutorDTO

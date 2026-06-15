@@ -9,7 +9,7 @@ public interface IDialogService
     
     Task<GetDialogResponse> GetDialog(Guid dialogId, CancellationToken cancellationToken);
 
-    Task CreateDialog(AddDialogRequest request, CancellationToken cancellationToken);
+    Task<Guid> CreateDialog(AddDialogRequest request, CancellationToken cancellationToken);
     
     Task UpdateDialog(UpdateDialogRequest request, Guid dialogId, CancellationToken cancellationToken);
     

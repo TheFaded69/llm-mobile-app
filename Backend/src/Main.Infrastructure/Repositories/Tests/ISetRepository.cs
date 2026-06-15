@@ -20,10 +20,6 @@ public interface ISetRepository
         Guid id,
         CancellationToken cancellationToken);
     
-    Task<IEnumerable<Set>> GetFavoriteSetsByUserIdAsync(
-        Guid sessionId,
-        CancellationToken cancellationToken);
-    
     Task AddSetAsync(
         Set set,
         CancellationToken cancellationToken);
@@ -36,5 +32,5 @@ public interface ISetRepository
         Set set,
         CancellationToken cancellationToken);
     
-    Task<Set> GetSetByIdAsync(Guid id, CancellationToken cancellationToken);
+    Task<Set?> GetSetByIdAsync(Guid id, CancellationToken cancellationToken);
 }

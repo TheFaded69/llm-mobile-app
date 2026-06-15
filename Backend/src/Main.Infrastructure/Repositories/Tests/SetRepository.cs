@@ -39,14 +39,19 @@ public class SetRepository : ISetRepository
             query = query.Where(s => s.IsPublic);
         }
 
-        return await query.ToListAsync(cancellationToken);;
+        return await query
+            .Include(s => s.SetItems)
+            .ToListAsync(cancellationToken);;
     }
 
     public async Task<IEnumerable<Set>> GetSetsByIdsAsync(IEnumerable<Guid> ids, CancellationToken cancellationToken)
     {
         using var repository = await _repositoryFactory.CreateRepositoryAsync();
         
-        return await repository.Query.Where(x => ids.Contains(x.Id)).ToListAsync(cancellationToken);
+        return await repository
+            .Query
+            .Where(x => ids.Contains(x.Id))
+            .ToListAsync(cancellationToken);
     }
     
     public async Task<IEnumerable<Set>> GetSetsByUserIdAsync(
@@ -61,13 +66,6 @@ public class SetRepository : ISetRepository
             .ToListAsync(cancellationToken: cancellationToken);
     }
     
-    public async Task<IEnumerable<Set>> GetFavoriteSetsByUserIdAsync(
-        Guid sessionId,
-        CancellationToken cancellationToken)
-    {
-        throw new NotImplementedException();
-    }
-
     public async Task AddSetAsync(
         Set set,
         CancellationToken cancellationToken)
@@ -103,10 +101,12 @@ public class SetRepository : ISetRepository
         await repository.CommitAsync();
     }
 
-    public async Task<Set> GetSetByIdAsync(Guid id, CancellationToken cancellationToken)
+    public async Task<Set?> GetSetByIdAsync(Guid id, CancellationToken cancellationToken)
     {
         using var repository = await _repositoryFactory.CreateRepositoryAsync();
         
-        return await repository.GetAsync(id, cancellationToken);
+        return await repository.Query
+                .Include(s => s.SetItems)
+                .FirstOrDefaultAsync(e => e.Id == id, cancellationToken);
     }
 }

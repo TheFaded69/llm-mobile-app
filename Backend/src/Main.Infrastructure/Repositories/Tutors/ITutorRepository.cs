@@ -10,9 +10,7 @@ public interface ITutorRepository
     
     Task<List<Tutor>> GetMyTutors(Guid userId, CancellationToken cancellationToken);
     
-    Task<Tutor> GetTutor(Guid id, CancellationToken cancellationToken);
-    
-    Task<Tutor> GetTutorWithDetails(Guid id, CancellationToken cancellationToken);
+    Task<Tutor?> GetTutorWithDetails(Guid id, CancellationToken cancellationToken);
     
     Task UpdateTutor(Tutor tutor, CancellationToken cancellationToken);
     
