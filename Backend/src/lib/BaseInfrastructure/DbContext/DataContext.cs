@@ -88,6 +88,6 @@ public class DataContext : Microsoft.EntityFrameworkCore.DbContext, IDataContext
         
         modelBuilder
             .Entity<TEntityType>()
-            .Property(e => e.Deleted);
+            .Property(e => e.IsDeleted);
     }
 }

@@ -6,7 +6,7 @@ public abstract  class Entity<TIdType>
 
     public DateTime CreateTime { get; set; }
 
-    public bool Deleted { get; set; }
+    public bool IsDeleted { get; set; }
 
     private object Actual => this;
 

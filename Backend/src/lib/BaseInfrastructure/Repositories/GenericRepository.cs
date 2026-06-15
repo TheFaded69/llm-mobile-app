@@ -23,14 +23,14 @@ public class GenericRepository<TModelType, TKeyType> : IGenericRepository<TModel
     /// </summary>
     public IQueryable<TModelType> Query => _dbContext.Set<TModelType>()
         .AsNoTracking()
-        .Where(x => x.Deleted == false);
+        .Where(x => x.IsDeleted == false);
     
     /// <summary>
     /// Запрос для извлечения данных с отслеживанием
     /// </summary>
     public IQueryable<TModelType> TrackingQuery => _dbContext.Set<TModelType>()
         .AsTracking()
-        .Where(x => x.Deleted == false);
+        .Where(x => x.IsDeleted == false);
 
     public DbSet<TModelType> Set => _dbContext.Set<TModelType>();
 
@@ -121,7 +121,7 @@ public class GenericRepository<TModelType, TKeyType> : IGenericRepository<TModel
     /// <param name="obj">запись</param>
     public void Delete(TModelType obj)
     {
-        obj.Deleted = true;
+        obj.IsDeleted = true;
         
         Update(obj);
     }

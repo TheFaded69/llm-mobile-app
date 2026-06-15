@@ -22,6 +22,128 @@ namespace Main.Infrastructure.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
+            modelBuilder.Entity("Main.Domain.Dialogs.Models.Dialog", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreateTime")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("timestamp with time zone")
+                        .HasDefaultValueSql("NOW()");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
+
+                    b.Property<Guid>("TutorId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TutorId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Dialogs", (string)null);
+                });
+
+            modelBuilder.Entity("Main.Domain.Dialogs.Models.Message", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreateTime")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("timestamp with time zone")
+                        .HasDefaultValueSql("NOW()");
+
+                    b.Property<Guid>("DialogId")
+                        .HasColumnType("uuid");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
+
+                    b.Property<int>("Sender")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Text")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Translation")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DialogId");
+
+                    b.ToTable("Messages", (string)null);
+                });
+
+            modelBuilder.Entity("Main.Domain.Dictionary.Models.DictionaryWord", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreateTime")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("timestamp with time zone")
+                        .HasDefaultValueSql("NOW()");
+
+                    b.Property<Guid>("DictionaryId")
+                        .HasColumnType("uuid");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("Translation")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("character varying(30)");
+
+                    b.Property<string>("Word")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("character varying(30)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DictionaryId");
+
+                    b.ToTable("DictionaryWords", (string)null);
+                });
+
+            modelBuilder.Entity("Main.Domain.Dictionary.Models.UserDictionary", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreateTime")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("timestamp with time zone")
+                        .HasDefaultValueSql("NOW()");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId")
+                        .IsUnique();
+
+                    b.ToTable("UserDictionaries", (string)null);
+                });
+
             modelBuilder.Entity("Main.Domain.Identity.Models.ExternalLogin", b =>
                 {
                     b.Property<Guid>("Id")
@@ -33,11 +155,11 @@ namespace Main.Infrastructure.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasDefaultValueSql("NOW()");
 
-                    b.Property<bool>("Deleted")
-                        .HasColumnType("boolean");
-
                     b.Property<Guid>("IdentityUserId")
                         .HasColumnType("uuid");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
 
                     b.Property<string>("Provider")
                         .IsRequired()
@@ -66,20 +188,19 @@ namespace Main.Infrastructure.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasDefaultValueSql("NOW()");
 
-                    b.Property<bool>("Deleted")
-                        .HasColumnType("boolean");
-
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasMaxLength(255)
                         .HasColumnType("character varying(255)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
 
                     b.Property<string>("PasswordHash")
                         .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("UserName")
-                        .IsRequired()
                         .HasMaxLength(255)
                         .HasColumnType("character varying(255)");
 
@@ -102,14 +223,14 @@ namespace Main.Infrastructure.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasDefaultValueSql("NOW()");
 
-                    b.Property<bool>("Deleted")
-                        .HasColumnType("boolean");
-
                     b.Property<DateTimeOffset>("ExpiresAt")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<Guid>("IdentityUserId")
                         .HasColumnType("uuid");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
 
                     b.Property<string>("TokenHash")
                         .IsRequired()
@@ -137,9 +258,6 @@ namespace Main.Infrastructure.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasDefaultValueSql("NOW()");
 
-                    b.Property<bool>("Deleted")
-                        .HasColumnType("boolean");
-
                     b.Property<string>("DeviceId")
                         .HasColumnType("text");
 
@@ -148,6 +266,9 @@ namespace Main.Infrastructure.Migrations
 
                     b.Property<Guid>("IdentityUserId")
                         .HasColumnType("uuid");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
 
                     b.Property<DateTimeOffset?>("RevokedAt")
                         .HasColumnType("timestamp with time zone");
@@ -180,7 +301,7 @@ namespace Main.Infrastructure.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasDefaultValueSql("NOW()");
 
-                    b.Property<bool>("Deleted")
+                    b.Property<bool>("IsDeleted")
                         .HasColumnType("boolean");
 
                     b.Property<string>("Option")
@@ -214,7 +335,7 @@ namespace Main.Infrastructure.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasDefaultValueSql("NOW()");
 
-                    b.Property<bool>("Deleted")
+                    b.Property<bool>("IsDeleted")
                         .HasColumnType("boolean");
 
                     b.Property<Guid>("TestQuestionSelectionId")
@@ -238,11 +359,11 @@ namespace Main.Infrastructure.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasDefaultValueSql("NOW()");
 
-                    b.Property<bool>("Deleted")
-                        .HasColumnType("boolean");
-
                     b.Property<Guid?>("DeviceId")
                         .HasColumnType("uuid");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
 
                     b.Property<int>("SessionStatus")
                         .HasColumnType("integer");
@@ -279,10 +400,10 @@ namespace Main.Infrastructure.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasDefaultValueSql("NOW()");
 
-                    b.Property<bool>("Deleted")
+                    b.Property<bool?>("IsCorrect")
                         .HasColumnType("boolean");
 
-                    b.Property<bool?>("IsCorrect")
+                    b.Property<bool>("IsDeleted")
                         .HasColumnType("boolean");
 
                     b.Property<Guid>("QuestionId")
@@ -315,15 +436,15 @@ namespace Main.Infrastructure.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasDefaultValueSql("NOW()");
 
-                    b.Property<bool>("Deleted")
-                        .HasColumnType("boolean");
-
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<int>("Duration")
                         .HasColumnType("integer");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
 
                     b.Property<bool>("IsPublic")
                         .HasColumnType("boolean");
@@ -360,12 +481,12 @@ namespace Main.Infrastructure.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasDefaultValueSql("NOW()");
 
-                    b.Property<bool>("Deleted")
-                        .HasColumnType("boolean");
-
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("text");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
 
                     b.Property<Guid>("SetId")
                         .HasColumnType("uuid");
@@ -392,7 +513,7 @@ namespace Main.Infrastructure.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasDefaultValueSql("NOW()");
 
-                    b.Property<bool>("Deleted")
+                    b.Property<bool>("IsDeleted")
                         .HasColumnType("boolean");
 
                     b.HasKey("Id");
@@ -417,9 +538,6 @@ namespace Main.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<bool>("Deleted")
-                        .HasColumnType("boolean");
-
                     b.Property<string>("ExplainTerm")
                         .IsRequired()
                         .HasMaxLength(255)
@@ -430,11 +548,154 @@ namespace Main.Infrastructure.Migrations
                         .HasMaxLength(255)
                         .HasColumnType("character varying(255)");
 
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
+
                     b.HasKey("Id");
 
                     b.ToTable("TestQuestions", (string)null);
 
                     b.UseTptMappingStrategy();
+                });
+
+            modelBuilder.Entity("Main.Domain.Tutors.Models.FavoriteTutor", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreateTime")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("timestamp with time zone")
+                        .HasDefaultValueSql("NOW()");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
+
+                    b.Property<Guid>("TutorId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TutorId");
+
+                    b.HasIndex("UserId");
+
+                    b.HasIndex("UserId", "TutorId")
+                        .IsUnique();
+
+                    b.ToTable("FavoriteTutors", (string)null);
+                });
+
+            modelBuilder.Entity("Main.Domain.Tutors.Models.StoryLine", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreateTime")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("timestamp with time zone")
+                        .HasDefaultValueSql("NOW()");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("Story")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<Guid>("TutorId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TutorId");
+
+                    b.ToTable("StoryLines", (string)null);
+                });
+
+            modelBuilder.Entity("Main.Domain.Tutors.Models.TargetWord", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreateTime")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("timestamp with time zone")
+                        .HasDefaultValueSql("NOW()");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
+
+                    b.Property<Guid>("TutorId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Word")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TutorId");
+
+                    b.ToTable("TargetWords", (string)null);
+                });
+
+            modelBuilder.Entity("Main.Domain.Tutors.Models.Tutor", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreateTime")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("timestamp with time zone")
+                        .HasDefaultValueSql("NOW()");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int>("Difficulty")
+                        .HasColumnType("integer");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("IsPublic")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.Property<string>("Personality")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("character varying(255)");
+
+                    b.Property<string>("TutorRole")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("character varying(255)");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("IsPublic");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Tutors", (string)null);
                 });
 
             modelBuilder.Entity("Main.Domain.Users.Models.User", b =>
@@ -448,19 +709,18 @@ namespace Main.Infrastructure.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasDefaultValueSql("NOW()");
 
-                    b.Property<bool>("Deleted")
-                        .HasColumnType("boolean");
-
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasMaxLength(255)
                         .HasColumnType("character varying(255)");
 
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
+
                     b.Property<int>("Role")
                         .HasColumnType("integer");
 
                     b.Property<string>("UserName")
-                        .IsRequired()
                         .HasMaxLength(255)
                         .HasColumnType("character varying(255)");
 
@@ -548,6 +808,48 @@ namespace Main.Infrastructure.Migrations
                     b.ToTable("TestQuestionTrueFalses", (string)null);
                 });
 
+            modelBuilder.Entity("Main.Domain.Dialogs.Models.Dialog", b =>
+                {
+                    b.HasOne("Main.Domain.Tutors.Models.Tutor", null)
+                        .WithMany()
+                        .HasForeignKey("TutorId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Main.Domain.Users.Models.User", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Main.Domain.Dialogs.Models.Message", b =>
+                {
+                    b.HasOne("Main.Domain.Dialogs.Models.Dialog", null)
+                        .WithMany("Messages")
+                        .HasForeignKey("DialogId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Main.Domain.Dictionary.Models.DictionaryWord", b =>
+                {
+                    b.HasOne("Main.Domain.Dictionary.Models.UserDictionary", null)
+                        .WithMany("Words")
+                        .HasForeignKey("DictionaryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Main.Domain.Dictionary.Models.UserDictionary", b =>
+                {
+                    b.HasOne("Main.Domain.Users.Models.User", null)
+                        .WithOne()
+                        .HasForeignKey("Main.Domain.Dictionary.Models.UserDictionary", "UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("Main.Domain.Tests.Models.Questions.TestQuestionQuestionOption", b =>
                 {
                     b.HasOne("Main.Domain.Tests.Models.Questions.TestQuestionQuestion", "TestQuestionQuestion")
@@ -572,21 +874,17 @@ namespace Main.Infrastructure.Migrations
 
             modelBuilder.Entity("Main.Domain.Tests.Models.Session", b =>
                 {
-                    b.HasOne("Main.Domain.Tests.Models.Set", "Set")
-                        .WithMany("Sessions")
+                    b.HasOne("Main.Domain.Tests.Models.Set", null)
+                        .WithMany()
                         .HasForeignKey("SetId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Main.Domain.Users.Models.User", "User")
-                        .WithMany("Sessions")
+                    b.HasOne("Main.Domain.Users.Models.User", null)
+                        .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Set");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Main.Domain.Tests.Models.SessionItem", b =>
@@ -616,13 +914,11 @@ namespace Main.Infrastructure.Migrations
 
             modelBuilder.Entity("Main.Domain.Tests.Models.Set", b =>
                 {
-                    b.HasOne("Main.Domain.Users.Models.User", "User")
-                        .WithMany("Sets")
+                    b.HasOne("Main.Domain.Users.Models.User", null)
+                        .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Main.Domain.Tests.Models.SetItem", b =>
@@ -634,6 +930,48 @@ namespace Main.Infrastructure.Migrations
                         .IsRequired();
 
                     b.Navigation("Set");
+                });
+
+            modelBuilder.Entity("Main.Domain.Tutors.Models.FavoriteTutor", b =>
+                {
+                    b.HasOne("Main.Domain.Tutors.Models.Tutor", null)
+                        .WithMany()
+                        .HasForeignKey("TutorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Main.Domain.Users.Models.User", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Main.Domain.Tutors.Models.StoryLine", b =>
+                {
+                    b.HasOne("Main.Domain.Tutors.Models.Tutor", null)
+                        .WithMany("Stories")
+                        .HasForeignKey("TutorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Main.Domain.Tutors.Models.TargetWord", b =>
+                {
+                    b.HasOne("Main.Domain.Tutors.Models.Tutor", null)
+                        .WithMany("TargetWords")
+                        .HasForeignKey("TutorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Main.Domain.Tutors.Models.Tutor", b =>
+                {
+                    b.HasOne("Main.Domain.Users.Models.User", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Main.Domain.Tests.Models.Answers.TestAnswerQuestion", b =>
@@ -699,6 +1037,16 @@ namespace Main.Infrastructure.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("Main.Domain.Dialogs.Models.Dialog", b =>
+                {
+                    b.Navigation("Messages");
+                });
+
+            modelBuilder.Entity("Main.Domain.Dictionary.Models.UserDictionary", b =>
+                {
+                    b.Navigation("Words");
+                });
+
             modelBuilder.Entity("Main.Domain.Tests.Models.Session", b =>
                 {
                     b.Navigation("SessionItems");
@@ -706,16 +1054,14 @@ namespace Main.Infrastructure.Migrations
 
             modelBuilder.Entity("Main.Domain.Tests.Models.Set", b =>
                 {
-                    b.Navigation("Sessions");
-
                     b.Navigation("SetItems");
                 });
 
-            modelBuilder.Entity("Main.Domain.Users.Models.User", b =>
+            modelBuilder.Entity("Main.Domain.Tutors.Models.Tutor", b =>
                 {
-                    b.Navigation("Sessions");
+                    b.Navigation("Stories");
 
-                    b.Navigation("Sets");
+                    b.Navigation("TargetWords");
                 });
 
             modelBuilder.Entity("Main.Domain.Tests.Models.Questions.TestQuestionQuestion", b =>
