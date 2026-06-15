@@ -1,10 +1,18 @@
 ﻿using Main.Contract.Dialogs.V1.Requests;
 using Main.Contract.Dialogs.V1.Responses;
+using Main.Infrastructure.Repositories.Dialogs;
 
 namespace Main.Application.Dialogs;
 
 public class DialogService : IDialogService
 {
+    private readonly IDialogRepository _dialogRepository;
+
+    public DialogService(IDialogRepository dialogRepository)
+    {
+        _dialogRepository = dialogRepository;
+    }
+    
     public async Task<GetDialogsResponse> GetDialogs(Guid userId, CancellationToken cancellationToken)
     {
         throw new NotImplementedException();

@@ -92,6 +92,9 @@ builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IRepositoryFactory<Set, Guid>, RepositoryFactory<Set, Guid>>();
 builder.Services.AddScoped<ISetRepository, SetRepository>();
 
+builder.Services.AddScoped<IRepositoryFactory<FavoriteSet, Guid>, RepositoryFactory<FavoriteSet, Guid>>();
+builder.Services.AddScoped<IFavoriteSetRepository, FavoriteSetRepository>();
+
 builder.Services.AddScoped<IRepositoryFactory<Session, Guid>, RepositoryFactory<Session, Guid>>();
 builder.Services.AddScoped<ISessionRepository, SessionRepository>();
 
@@ -99,6 +102,9 @@ builder.Services.AddScoped<IIdentityRepository, IdentityRepository>();
 
 builder.Services.AddScoped<IRepositoryFactory<Tutor, Guid>, RepositoryFactory<Tutor, Guid>>();
 builder.Services.AddScoped<ITutorRepository, TutorRepository>();
+
+builder.Services.AddScoped<IRepositoryFactory<FavoriteTutor, Guid>, RepositoryFactory<FavoriteTutor, Guid>>();
+builder.Services.AddScoped<IFavoriteTutorRepository, FavoriteTutorRepository>();
 
 builder.Services.AddScoped<IRepositoryFactory<Dialog, Guid>, RepositoryFactory<Dialog, Guid>>();
 builder.Services.AddScoped<IDialogRepository, DialogRepository>();

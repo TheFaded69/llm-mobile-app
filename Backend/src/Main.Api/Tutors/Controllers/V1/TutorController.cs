@@ -1,5 +1,8 @@
 ﻿using Main.Api.Extensions;
 using Main.Application.Tutors;
+using Main.Contract.Tutors.V1.Requests;
+using Main.Contract.Tutors.V1.Responses;
+using Main.Domain.Tutors.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -18,7 +21,7 @@ public class TutorController : ControllerBase
     
     [HttpGet]
     [Authorize]
-    //[ProducesResponseType(typeof(GetTutorsResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(GetTutorsResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public async Task<IActionResult> GetTutors(
@@ -28,10 +31,10 @@ public class TutorController : ControllerBase
         {
             var userId = User.GetUserId();
             
-            /*var response = await _dialogService.GetDialogs(userId);
+            var response = await _tutorService.GetTutors(userId, cancellationToken);
             
             if (response == null)
-                return NotFound();*/
+                return NotFound();
             
             return Ok();
         }
@@ -43,7 +46,7 @@ public class TutorController : ControllerBase
     
     [HttpGet("{id:guid}")]
     [Authorize]
-    //[ProducesResponseType(typeof(GetTutorsResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(GetTutorResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public async Task<IActionResult> GetTutor(
@@ -52,12 +55,10 @@ public class TutorController : ControllerBase
     {
         try
         {
-            var userId = User.GetUserId();
-            
-            /*var response = await _dialogService.GetDialogs(userId);
+            var response = await _tutorService.GetTutor(id, cancellationToken);
 
             if (response == null)
-                return NotFound();*/
+                return NotFound();
             
             return Ok();
         }
@@ -69,7 +70,7 @@ public class TutorController : ControllerBase
     
     [HttpGet("my")]
     [Authorize]
-    //[ProducesResponseType(typeof(GetTutorsResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(GetTutorsResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public async Task<IActionResult> GetMyTutors(
@@ -79,10 +80,10 @@ public class TutorController : ControllerBase
         {
             var userId = User.GetUserId();
             
-            /*var response = await _dialogService.GetDialogs(userId);
+            var response = await _tutorService.GetMyTutors(userId, cancellationToken);
 
             if (response == null)
-                return NotFound();*/
+                return NotFound();
             
             return Ok();
         }
@@ -94,7 +95,7 @@ public class TutorController : ControllerBase
     
     [HttpGet("favorite")]
     [Authorize]
-    //[ProducesResponseType(typeof(GetTutorsResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(GetTutorsResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public async Task<IActionResult> GetFavoriteTutors(
@@ -104,12 +105,78 @@ public class TutorController : ControllerBase
         {
             var userId = User.GetUserId();
             
-            /*var response = await _dialogService.GetDialogs(userId);
+            var response = await _tutorService.GetFavoriteTutors(userId, cancellationToken);
 
             if (response == null)
-                return NotFound();*/
+                return NotFound();
             
             return Ok();
+        }
+        catch (Exception e)
+        {
+            return Problem(e.Message);
+        }
+    }
+
+    [HttpPost]
+    [Authorize]
+    [ProducesResponseType(typeof(Tutor), StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> CreateTutor(
+        [FromBody] CreateTutorRequest request,
+        CancellationToken cancellationToken
+        )
+    {
+        try
+        {
+            var userId = User.GetUserId();
+            
+            await _tutorService.CreateTutor(userId, request, cancellationToken);
+            
+            return StatusCode(StatusCodes.Status201Created);
+        }
+        catch (Exception e)
+        {
+            return Problem(e.Message);
+        }
+    }
+    
+    [HttpPut("{id:guid}")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> UpdateTutor(
+        Guid id, 
+        [FromBody] UpdateTutorRequest request,
+        CancellationToken cancellationToken)
+    {
+        try
+        {
+            if (request.Tutor.Id != Guid.Empty && request.Tutor.Id != id)
+                return BadRequest("Не совпадает [ID] в запросе и теле");
+            
+            await _tutorService.UpdateTutor(id, request, cancellationToken);
+            
+            return NoContent();
+        }
+        catch (Exception e)
+        {
+            return Problem(e.Message);
+        }
+    }
+    
+    [HttpDelete("{id:guid}")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> DeleteTutor(
+        Guid id,
+        CancellationToken cancellationToken)
+    {
+        try
+        {
+            await _tutorService.DeleteTutor(id, cancellationToken);
+            
+            return NoContent();
         }
         catch (Exception e)
         {
