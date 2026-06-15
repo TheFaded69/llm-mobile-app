@@ -27,7 +27,7 @@ services:
         condition: service_healthy
     environment:
       ASPNETCORE_ENVIRONMENT: Development
-      ConnectionStrings__main_connection: Server=postgres;Port=5432;Database=llm_app_main_db;User Id=admin;Password=admin;
+      ConnectionStrings__main_connection: Server=postgres;Port=5432;Database=llm_app_main_db;User Id=admin;Password=admin;Ssl Mode=Disable;
     ports:
       - "5001:5001"
 
